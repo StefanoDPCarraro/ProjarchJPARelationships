@@ -1,5 +1,7 @@
 package br.pucrs.nomeusuario.exemplo.apresentacao;
 
+import br.pucrs.nomeusuario.exemplo.persistencia.autor.Autor;
+import br.pucrs.nomeusuario.exemplo.persistencia.autor.IAutorRepository;
 import br.pucrs.nomeusuario.exemplo.persistencia.editora.Editora;
 import br.pucrs.nomeusuario.exemplo.persistencia.editora.IEditoraRepository;
 import br.pucrs.nomeusuario.exemplo.persistencia.livro.IAcervoRepository;
@@ -14,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ExemploController {
     private IAcervoRepository acervo;
     private IEditoraRepository editoras;
+    private IAutorRepository autores;
 
     @Autowired
-    public ExemploController(IAcervoRepository acervo, IEditoraRepository editoras) {
+    public ExemploController(IAcervoRepository acervo, IEditoraRepository editoras, IAutorRepository authors) {
         this.acervo = acervo;        
         this.editoras = editoras;
+        this.autores = authors;
     }
 
     @GetMapping("")
@@ -50,6 +54,16 @@ public class ExemploController {
     public boolean cadastraLNovaEditora(@RequestBody final Editora editora) {
         editoras.addEditora(editora);
         return true;
+    }
+
+    @GetMapping("/autorid/{id}")
+    public Autor getAutor(@PathVariable Long id){
+        return autores.getAutor(id);
+    }
+
+    @GetMapping("/autores")
+    public List<Autor> getAutores(){
+        return autores.getAutores();
     }
 
 }
